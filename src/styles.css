@@ -1,0 +1,234 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-pink: var(--pink);
+  --color-violet: var(--violet);
+  --color-deep-violet: var(--deep-violet);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0.875rem;
+  --background: oklch(0 0 0); /* #000000 */
+  --surface: oklch(0.155 0 0); /* #0D0D0D */
+  --card: oklch(0.205 0 0); /* #171717 */
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --foreground: oklch(1 0 0);
+  --muted-foreground: oklch(0.785 0 0); /* #B8B8B8 */
+  --muted: oklch(0.205 0 0);
+  --pink: oklch(0.68 0.22 355); /* #FF4FA3 */
+  --violet: oklch(0.606 0.219 293); /* #8B5CF6 */
+  --deep-violet: oklch(0.491 0.241 292.6); /* #6D28D9 */
+  --primary: var(--pink);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.205 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --accent: var(--violet);
+  --accent-foreground: oklch(1 0 0);
+  --success: oklch(0.78 0.16 160);
+  --destructive: oklch(0.68 0.2 22);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.269 0 0); /* #292929 */
+  --input: oklch(0.269 0 0);
+  --ring: var(--violet);
+
+  --gradient-brand: linear-gradient(135deg, var(--pink) 0%, var(--violet) 100%);
+  --gradient-violet: linear-gradient(135deg, var(--violet) 0%, var(--deep-violet) 100%);
+  --shadow-glow: 0 10px 40px -10px color-mix(in oklab, var(--pink) 55%, transparent);
+  --shadow-card: 0 20px 50px -25px color-mix(in oklab, var(--violet) 45%, transparent);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--violet);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility text-gradient {
+  background-image: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-violet {
+  background-image: var(--gradient-violet);
+}
+
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  color: var(--primary-foreground);
+  background-image: var(--gradient-brand);
+  box-shadow: var(--shadow-glow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+  }
+  &:disabled {
+    opacity: 0.6;
+    transform: none;
+    cursor: not-allowed;
+  }
+}
+
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 70%, transparent);
+  transition: border-color 0.2s ease, background 0.2s ease;
+  &:hover {
+    border-color: var(--violet);
+    background: var(--card);
+  }
+}
+
+@utility card-surface {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+}
+
+@utility gradient-border {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--gradient-brand);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+@utility glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@utility field {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+  &::placeholder {
+    color: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 25%, transparent);
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--destructive);
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}

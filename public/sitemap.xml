@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>/</loc></url>
+  <url><loc>/about</loc></url>
+  <url><loc>/services</loc></url>
+  <url><loc>/projects</loc></url>
+  <url><loc>/faq</loc></url>
+  <url><loc>/contact</loc></url>
+  <url><loc>/consultation</loc></url>
+  <url><loc>/projects/autocare-feedback-engine</loc></url>
+  <url><loc>/projects/autocare-reputation-dashboard</loc></url>
+  <url><loc>/projects/email-customer-support-agent</loc></url>
+  <url><loc>/projects/employee-onboarding-workflow</loc></url>
+  <url><loc>/projects/homehaven</loc></url>
+  <url><loc>/projects/lahyor-ventures</loc></url>
+  <url><loc>/projects/shopify-store-ui</loc></url>
+  <url><loc>/projects/user-info-app</loc></url>
+  <url><loc>/projects/to-do-list</loc></url>
+</urlset>
