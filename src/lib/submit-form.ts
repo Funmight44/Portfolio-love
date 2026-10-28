@@ -27,22 +27,46 @@ export async function submitForm(
   }
 }
 
-/** Sends contact details to the server-side Web3Forms endpoint. */
+/** Sends contact details directly to Web3Forms using its public client access key. */
 export async function submitContactForm(data: Record<string, string>): Promise<SubmitResult> {
-  try {
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data),
-    });
-    const result = (await res.json().catch(() => null)) as SubmitResult | null;
-    if (result && typeof result.ok === "boolean") return result;
+  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
+  if (!accessKey?.trim()) {
     return {
       ok: false,
-      error: `The contact endpoint returned an unexpected response (HTTP ${res.status}). Please try again later.`,
+      error: "This form isn't connected yet. Please reach out through the contact details instead.",
+    };
+  }
+
+  try {
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: accessKey.trim(),
+        name: data.name,
+        email: data.email,
+        message: data.message,
+        service: data.service,
+        from_name: "Portfolio contact form",
+        subject: data.subject ? `Portfolio: ${data.subject}` : "New portfolio message",
+      }),
+    });
+    const result = (await res.json().catch(() => null)) as {
+      success?: boolean;
+      message?: string;
+      body?: { message?: string };
+    } | null;
+    if (res.ok && result?.success === true) return { ok: true };
+
+    return {
+      ok: false,
+      error:
+        result?.body?.message ||
+        result?.message ||
+        `Web3Forms returned an unsuccessful response (HTTP ${res.status}). Please try again.`,
     };
   } catch {
-    return { ok: false, error: "Could not reach the contact endpoint. Check your connection and try again." };
+    return { ok: false, error: "Could not reach Web3Forms. Check your connection and try again." };
   }
 }
 
