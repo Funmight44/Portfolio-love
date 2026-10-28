@@ -31,4 +31,4 @@ npm run dev
 ## Portfolio setup
 - `npm install`, `npm run dev`, `npm run build`.
 - Edit personal details in `src/data/site.ts`, projects in `src/data/projects.ts` (images in `public/projects/`), services and FAQ in `src/data/`.
-- In `.env`, paste your Web3Forms access key (`VITE_WEB3FORMS_ACCESS_KEY`) for the Contact form and a webhook URL (`VITE_CONSULTATION_WEBHOOK_URL`, e.g. n8n) for the Consultation form. Restart `npm run dev` after editing.
+- Set `WEB3FORMS_ACCESS_KEY` in `.env` for the server-side Contact endpoint, and `VITE_CONSULTATION_WEBHOOK_URL` for the Consultation form's n8n webhook. In Netlify, configure both under **Site configuration → Environment variables**. Restart `npm run dev` after editing `.env` locally.

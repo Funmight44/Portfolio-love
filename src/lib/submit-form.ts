@@ -27,33 +27,15 @@ export async function submitForm(
   }
 }
 
-/** Sends the Contact form through Web3Forms (https://web3forms.com). */
-export async function submitWeb3Form(
-  accessKey: string | undefined,
-  data: Record<string, string>,
-): Promise<SubmitResult> {
-  if (!accessKey) {
-    return {
-      ok: false,
-      error: "This form isn't connected yet. Please reach out through the contact details instead.",
-    };
-  }
+/** Sends contact details to the server-side Web3Forms endpoint. */
+export async function submitContactForm(data: Record<string, string>): Promise<SubmitResult> {
   try {
-    const res = await fetch("https://api.web3forms.com/submit", {
+    const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: accessKey,
-        from_name: "Portfolio contact form",
-        ...data,
-        subject: data["subject"] ? `Portfolio: ${data["subject"]}` : "New portfolio message",
-      }),
+      body: JSON.stringify(data),
     });
-    const json = (await res.json().catch(() => ({}))) as { success?: boolean; message?: string };
-    if (!res.ok || !json.success) {
-      return { ok: false, error: json.message || "Something went wrong sending your message. Please try again." };
-    }
-    return { ok: true };
+    return (await res.json()) as SubmitResult;
   } catch {
     return { ok: false, error: "Network error. Check your connection and try again." };
   }

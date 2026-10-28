@@ -2,7 +2,7 @@ import { Send } from "lucide-react";
 import { serviceOptions } from "@/data/services";
 import { FormField, FormStatus } from "./FormField";
 import { useSimpleForm } from "./useForm";
-import { submitWeb3Form } from "@/lib/submit-form";
+import { submitContactForm } from "@/lib/submit-form";
 
 export function ContactForm() {
   const { errors, status, submitError, onSubmit, fieldProps } = useSimpleForm(
@@ -14,7 +14,7 @@ export function ContactForm() {
       subject: { required: "Please add a subject." },
       message: { required: "Please write a message.", min: 10 },
     },
-    (data) => submitWeb3Form(import.meta.env["WEB3FORMS_ACCESS_KEY"], data),
+    submitContactForm,
   );
 
   return (
