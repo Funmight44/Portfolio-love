@@ -180,8 +180,8 @@ export const projects: Project[] = [
   liveUrl: "https://javascript-quiz-applictation.netlify.app",
 },
 {
-  slug: "lahyor-ventures",
-  title: "Lahyor Ventures",
+  slug: "lahyor-ventures with chat widget",
+  title: "Lahyor Ventures plus order form",
   category:  "Frontend Development",
   short: "An e-commerce platform for browsing and purchasing products, featuring an AI-powered chat widget that assists customers with inquiries and support.",
   technologies: ["React", "JavaScript", "CSS", "n8n", "AI Automation"],
