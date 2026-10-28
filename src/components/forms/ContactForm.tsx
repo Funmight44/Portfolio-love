@@ -14,7 +14,7 @@ export function ContactForm() {
       subject: { required: "Please add a subject." },
       message: { required: "Please write a message.", min: 10 },
     },
-    (data) => submitWeb3Form(import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"], data),
+    (data) => submitWeb3Form(import.meta.env["WEB3FORMS_ACCESS_KEY"], data),
   );
 
   return (
