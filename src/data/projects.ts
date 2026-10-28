@@ -115,7 +115,7 @@ export const projects: Project[] = [
     technologies: ["HTML", "CSS", "JavaScript"],
     image: "/projects/lahyorStore.png",
     features: ["Category navigation", "Product search", "Wishlist, account and cart icons"],
-    liveUrl: "https://lahyorstore.netlify.app",
+    liveUrl: "https://lahyorstore2.netlify.app",
   },
   {
     slug: "shopify-store-ui",
