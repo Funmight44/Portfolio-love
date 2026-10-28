@@ -35,9 +35,14 @@ export async function submitContactForm(data: Record<string, string>): Promise<S
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(data),
     });
-    return (await res.json()) as SubmitResult;
+    const result = (await res.json().catch(() => null)) as SubmitResult | null;
+    if (result && typeof result.ok === "boolean") return result;
+    return {
+      ok: false,
+      error: `The contact endpoint returned an unexpected response (HTTP ${res.status}). Please try again later.`,
+    };
   } catch {
-    return { ok: false, error: "Network error. Check your connection and try again." };
+    return { ok: false, error: "Could not reach the contact endpoint. Check your connection and try again." };
   }
 }
 

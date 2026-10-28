@@ -39,7 +39,7 @@ export const Route = createFileRoute("/api/contact")({
           return jsonResult({ ok: false, error: "Please check the form and try again." }, 400);
         }
 
-        const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+        const accessKey = process.env.WEB3FORMS_ACCESS_KEY?.trim();
         if (!accessKey) {
           return jsonResult({
             ok: false,
@@ -53,24 +53,42 @@ export const Route = createFileRoute("/api/contact")({
             headers: { "Content-Type": "application/json", Accept: "application/json" },
             body: JSON.stringify({
               access_key: accessKey,
+              name: data.name,
+              email: data.email,
+              message: data.message,
+              service: data.service,
               from_name: "Portfolio contact form",
-              ...data,
               subject: data.subject ? `Portfolio: ${data.subject}` : "New portfolio message",
             }),
           });
-          const result = (await upstream.json().catch(() => ({}))) as {
+          const result = (await upstream.json().catch(() => null)) as {
             success?: boolean;
             message?: string;
-          };
-          if (!upstream.ok || !result.success) {
+            body?: { message?: string };
+          } | null;
+          const providerMessage = result?.body?.message || result?.message;
+          const safeMessage = providerMessage
+            ?.replaceAll(accessKey, "[redacted]")
+            .replace(/[\r\n\t]+/g, " ")
+            .slice(0, 240);
+          if (!upstream.ok || !result?.success) {
+            if (upstream.status === 403) {
+              return jsonResult({
+                ok: false,
+                error: `Web3Forms rejected the server-side request (HTTP 403)${safeMessage ? `: ${safeMessage}` : ""}. Its current policy requires an active paid plan and the server IP to be allowlisted. Contact Web3Forms support to confirm server-side access for this deployment.`,
+              }, 502);
+            }
+
             return jsonResult({
               ok: false,
-              error: result.message || "Something went wrong sending your message. Please try again.",
+              error: safeMessage
+                ? `Web3Forms rejected the submission (HTTP ${upstream.status}): ${safeMessage}`
+                : `Web3Forms returned an unsuccessful response (HTTP ${upstream.status}). Please try again or contact support.`,
             }, 502);
           }
           return jsonResult({ ok: true });
         } catch {
-          return jsonResult({ ok: false, error: "Network error. Check your connection and try again." }, 502);
+          return jsonResult({ ok: false, error: "The server could not reach Web3Forms. Please try again later." }, 502);
         }
       },
     },
